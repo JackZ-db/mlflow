@@ -177,13 +177,14 @@ class AsyncLoggingQueue:
 
         def logging_func(run_batch):
             try:
+                _logger.info("Begin logging metrics for Run Id {}: {}".format(run_batch.run_id, run_batch.metrics))
                 self._logging_func(
                     run_id=run_batch.run_id,
                     metrics=run_batch.metrics,
                     params=run_batch.params,
                     tags=run_batch.tags,
                 )
-
+                _logger.info("Finish logging metrics for Run Id {}: {}".format(run_batch.run_id, run_batch.metrics))
                 # Signal the batch processing is done.
                 run_batch.completion_event.set()
                 for child_batch in run_batch.child_batches:
